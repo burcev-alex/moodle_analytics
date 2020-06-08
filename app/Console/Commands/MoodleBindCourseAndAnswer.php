@@ -120,6 +120,7 @@ class MoodleBindCourseAndAnswer extends Command
                                                 // сохраняем в Redis
                                                 // вопрос и текст, где нужно найти соотвествие
                                                 $object = [
+                                                    'userId' => $itemUser['id'],
                                                     'pageId' => $arPage['coursemodule'],
                                                     'courseId' => $course['xml_id'],
                                                     'quizId' => $arQuiz['id'],

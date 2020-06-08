@@ -7,6 +7,7 @@ use Orchid\Screen\Actions\Link;
 use Orchid\Screen\Screen;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Arr;
+use Orchid\Screen\Repository;
 
 
 class LsaListScreen extends Screen
@@ -38,14 +39,18 @@ class LsaListScreen extends Screen
         $iteration = 0;
         foreach($data as $key=>$object){
             $item = json_decode(base64_decode($object), true);
-            $result->items[$iteration] = (object)[
+
+            $element = new Repository([
                 'pageId' => $item['pageId'],
                 'courseId' => $item['courseId'],
                 'quizId' => $item['quizId'],
                 'questionId' => $item['questionId'],
                 'questionText' => $item['questionText'],
-                'attemptId' => $item['attemptId']
-            ];
+                'attemptId' => $item['attemptId'],
+                'pageText' => substr($item['pageText'], 0, 100).'...'
+            ]);
+
+            $result->{$iteration} = $element;
 
             $iteration++;
         }
