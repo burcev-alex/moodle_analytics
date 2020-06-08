@@ -1,5 +1,5 @@
 <?php
-namespace App\Orchid\Screens\MoodleAccount;
+namespace App\Orchid\Screens\Moodle;
 
 use App\MoodleAccount;
 use App\User;
@@ -14,14 +14,14 @@ use Orchid\Screen\Actions\Button;
 use Orchid\Screen\Screen;
 use Orchid\Support\Facades\Alert;
 
-class MoodleAccountEditScreen extends Screen
+class AccountEditScreen extends Screen
 {
     /**
      * Display header name.
      *
      * @var string
      */
-    public $name = 'Moodle account';
+    public $name = 'Курсы';
 
     /**
      * Display header description.
@@ -51,7 +51,7 @@ class MoodleAccountEditScreen extends Screen
         }
 
         return [
-            'accounts' => $account
+            'account' => $account
         ];
     }
 

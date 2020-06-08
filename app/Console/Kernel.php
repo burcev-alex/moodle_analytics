@@ -30,16 +30,16 @@ class Kernel extends ConsoleKernel
         set_time_limit(0);
         
         // валидация прокси-серверов
-        $schedule->command('validator:proxy')->dailyAt('03:00');
+        #$schedule->command('validator:proxy')->dailyAt('03:00');
 
         // генерация задач на день
-        $schedule->command('generation:schedule')->dailyAt('05:00');
+        #$schedule->command('generation:schedule')->dailyAt('05:00');
 
         // выполнение задач
-        $schedule->command('visiting:page')->everyMinute()->between('7:00', '20:00');
+        #$schedule->command('visiting:page')->everyMinute()->between('7:00', '20:00');
 
         // отчет посещения за предыдущий день
-        $schedule->command('visiting:report')->dailyAt('06:00');
+        #$schedule->command('visiting:report')->dailyAt('06:00');
     }
 
     /**

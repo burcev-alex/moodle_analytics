@@ -37,11 +37,11 @@ class MainMenuComposer
                     ->icon('icon-layers')
                     ->route('platform.moodleaccount.list')
                     ->title('Moodle')
-            )/*
+            )
             ->add(Menu::MAIN,
-                ItemMenu::label('Log')
+                ItemMenu::label('Курсы')
                     ->icon('icon-list')
-                    ->route('platform.example.editors')
-            )*/;
+                    ->route('platform.moodlecourse.list')
+            );
     }
 }

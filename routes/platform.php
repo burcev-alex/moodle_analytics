@@ -14,8 +14,10 @@ use App\Orchid\Screens\Role\RoleEditScreen;
 use App\Orchid\Screens\Role\RoleListScreen;
 use App\Orchid\Screens\User\UserEditScreen;
 use App\Orchid\Screens\User\UserListScreen;
-use App\Orchid\Screens\MoodleAccount\MoodleAccountEditScreen;
-use App\Orchid\Screens\MoodleAccount\MoodleAccountListScreen;
+use App\Orchid\Screens\Moodle\AccountEditScreen;
+use App\Orchid\Screens\Moodle\AccountListScreen;
+use App\Orchid\Screens\Moodle\CourseEditScreen;
+use App\Orchid\Screens\Moodle\CourseListScreen;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -42,5 +44,9 @@ Route::screen('roles/create', RoleEditScreen::class)->name('platform.systems.rol
 Route::screen('roles', RoleListScreen::class)->name('platform.systems.roles');
 
 // Moodle Account
-$this->router->screen('moodleaccount/{post?}', MoodleAccountEditScreen::class)->name('platform.moodleaccount.edit');
-$this->router->screen('moodleaccounts', MoodleAccountListScreen::class)->name('platform.moodleaccount.list');
+$this->router->screen('moodleaccount/{post?}', AccountEditScreen::class)->name('platform.moodleaccount.edit');
+$this->router->screen('moodleaccounts', AccountListScreen::class)->name('platform.moodleaccount.list');
+
+// Moodle курсы
+$this->router->screen('moodlecourse/{post?}', CourseEditScreen::class)->name('platform.moodlecourse.edit');
+$this->router->screen('moodlecourses', CourseListScreen::class)->name('platform.moodlecourse.list');
