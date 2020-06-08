@@ -1,7 +1,7 @@
 <?php
 namespace App\Orchid\Screens\MoodleAccount;
 
-use App\Orchid\Layouts\MoodleAccountListLayout;
+use App\Orchid\Layouts\Moodle\AccountListLayout;
 use App\MoodleAccount;
 use Orchid\Screen\Actions\Link;
 use Orchid\Screen\Screen;
@@ -56,7 +56,7 @@ class MoodleAccountListScreen extends Screen
     public function layout(): array
     {
         return [
-            MoodleAccountListLayout::class
+            AccountListLayout::class
         ];
     }
 }

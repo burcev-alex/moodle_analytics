@@ -33,19 +33,15 @@ class MainMenuComposer
         // Main
         $this->dashboard->menu
             ->add(Menu::MAIN,
-                ItemMenu::label('Результирующая матрица')
-                    ->icon('icon-list')
-                    ->route('platform.matrix.list')
-            )
-            ->add(Menu::MAIN,
-                ItemMenu::label('Moodle Account')
-                    ->icon('icon-list')
+                ItemMenu::label('Moodle account')
+                    ->icon('icon-layers')
                     ->route('platform.moodleaccount.list')
-            )
+                    ->title('Moodle')
+            )/*
             ->add(Menu::MAIN,
-                ItemMenu::label('Очередь анализа')
+                ItemMenu::label('Log')
                     ->icon('icon-list')
-                    ->route('platform.analyze.list')
-            );
+                    ->route('platform.example.editors')
+            )*/;
     }
 }

@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Orchid\Layouts;
+namespace App\Orchid\Layouts\Moodle;
 
 use App\MoodleAccount;
 use Orchid\Screen\TD;
 use Orchid\Screen\Actions\Link;
 use Orchid\Screen\Layouts\Table;
 
-class MoodleAccountListLayout extends Table
+class AccountListLayout extends Table
 {
     /**
      * Data source.

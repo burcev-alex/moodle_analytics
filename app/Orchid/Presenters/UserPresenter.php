@@ -32,7 +32,11 @@ class UserPresenter extends Presenter implements Searchable, Personable
      */
     public function subTitle(): string
     {
-        return 'Administrator';
+        $roles = $this->entity->roles->pluck('name')->implode(' / ');
+
+        return empty($roles)
+            ? 'Regular user'
+            : $roles;
     }
 
     /**
@@ -50,7 +54,7 @@ class UserPresenter extends Presenter implements Searchable, Personable
     {
         $hash = md5(strtolower(trim($this->entity->email)));
 
-        return "https://www.gravatar.com/avatar/$hash";
+        return "https://www.gravatar.com/avatar/$hash?d=mp";
     }
 
     /**

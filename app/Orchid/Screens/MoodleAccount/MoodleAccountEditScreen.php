@@ -90,13 +90,16 @@ class MoodleAccountEditScreen extends Screen
         return [
             Layout::rows([
                 Input::make('account.full_name')
-                    ->title('ФИО'),
+                    ->title('Название портала'),
 
-                Input::make('account.login')
-                    ->title('Логин'),
+                Input::make('account.domain')
+                    ->title('Домен'),
 
-                Input::make('account.pass')
-                    ->title('Пароль'),
+                Input::make('account.endpoint')
+                    ->title('Точка доступа (url)'),
+
+                Input::make('account.api_key')
+                    ->title('Token'),
 
             ])
         ];

@@ -16,14 +16,14 @@ class PlatformScreen extends Screen
      *
      * @var string
      */
-    public $name = 'Панель администрирования';
+    public $name = 'Dashboard';
 
     /**
      * Display header description.
      *
      * @var string
      */
-    public $description = 'Доброе пожаловать!';
+    public $description = 'Welcome';
 
     /**
      * Query data.
@@ -47,7 +47,15 @@ class PlatformScreen extends Screen
         return [
             Link::make('Website')
                 ->href('http://www.dfn.mdpu.org.ua/')
-                ->icon('icon-globe-alt')
+                ->icon('icon-globe-alt'),
+
+            Link::make('Documentation')
+                ->href('https://docs.google.com/document/d/1_lh2XTCzbkgR4VooaL8864y-FtiZvycNfKDA1yYW-yc/edit')
+                ->icon('icon-docs'),
+
+            Link::make('GitHub')
+                ->href('https://github.com/burcev-alex/moodle_analytics')
+                ->icon('icon-social-github'),
         ];
     }
 
@@ -60,7 +68,7 @@ class PlatformScreen extends Screen
     {
         return [
             Layout::view('platform::partials.update'),
-            #Layout::view('platform::partials.welcome'),
+            Layout::view('dashboard.welcome'),
         ];
     }
 }
