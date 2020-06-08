@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "4e0f78072b5cb05cc9e73666cdea6e41",
+    "content-hash": "e6206de1ff6aca569d33c74ead1ed086",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -1300,6 +1300,40 @@
                 "storage"
             ],
             "time": "2020-05-18T15:13:39+00:00"
+        },
+        {
+            "name": "llagerlof/moodlerest",
+            "version": "2.3.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/llagerlof/MoodleRest.git",
+                "reference": "9ddccb80b0778d3297d9815fc33849337c38046e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/llagerlof/MoodleRest/zipball/9ddccb80b0778d3297d9815fc33849337c38046e",
+                "reference": "9ddccb80b0778d3297d9815fc33849337c38046e",
+                "shasum": ""
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "MoodleRest.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Lawrence Lagerlof",
+                    "email": "llagerlof@gmail.com"
+                }
+            ],
+            "description": "MoodleRest is a PHP class to query Moodle REST webservices",
+            "homepage": "https://github.com/llagerlof",
+            "time": "2019-12-20T12:04:37+00:00"
         },
         {
             "name": "monolog/monolog",
