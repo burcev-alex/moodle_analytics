@@ -42,6 +42,12 @@ class MainMenuComposer
                 ItemMenu::label('Курсы')
                     ->icon('icon-list')
                     ->route('platform.moodlecourse.list')
+            )
+            ->add(Menu::MAIN,
+                ItemMenu::label('LSA анализ')
+                    ->icon('icon-list')
+                    ->route('platform.lsa.list')
+                    ->title('Очередь')
             );
     }
 }
