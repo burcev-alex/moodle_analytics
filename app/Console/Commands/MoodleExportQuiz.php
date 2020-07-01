@@ -12,14 +12,14 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Redis;
 
-class MoodleExport extends Command
+class MoodleExportQuiz extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'moodle:export';
+    protected $signature = 'moodle:export_quiz';
 
     /**
      * The console command description.

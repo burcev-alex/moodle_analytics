@@ -29,17 +29,14 @@ class Kernel extends ConsoleKernel
     {
         set_time_limit(0);
         
-        // валидация прокси-серверов
-        #$schedule->command('validator:proxy')->dailyAt('03:00');
+        // выгрузка вопрос-конспект для LSA анализа
+        $schedule->command('moodle:export_quiz')->dailyAt('22:00');
 
-        // генерация задач на день
-        #$schedule->command('generation:schedule')->dailyAt('05:00');
+        // поиск пройденных тестов, сбор статистики
+        $schedule->command('moodle:quiz_analysis')->everyMinute()->between('7:00', '20:00');
 
-        // выполнение задач
-        #$schedule->command('visiting:page')->everyMinute()->between('7:00', '20:00');
-
-        // отчет посещения за предыдущий день
-        #$schedule->command('visiting:report')->dailyAt('06:00');
+        // отчет анализа, отправка уведомления пользователю проходивший тест
+        $schedule->command('moodle:notes')->everyMinute()->between('7:00', '22:00');
     }
 
     /**
