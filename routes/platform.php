@@ -19,6 +19,7 @@ use App\Orchid\Screens\Moodle\AccountListScreen;
 use App\Orchid\Screens\Moodle\CourseEditScreen;
 use App\Orchid\Screens\Moodle\CourseListScreen;
 use App\Orchid\Screens\Queue\LsaListScreen;
+use App\Orchid\Screens\ResultComparison;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -52,3 +53,8 @@ $this->router->screen('moodleaccounts', AccountListScreen::class)->name('platfor
 $this->router->screen('moodlecourse/{post?}', CourseEditScreen::class)->name('platform.moodlecourse.edit');
 $this->router->screen('moodlecourses', CourseListScreen::class)->name('platform.moodlecourse.list');
 $this->router->screen('queue-lsa', LsaListScreen::class)->name('platform.lsa.list');
+
+// LSA Result comparison
+$this->router->screen('lsaresultcomparison/{post?}', ResultComparison\LsaEditScreen::class)->name('platform.lsaresultcomparison.edit');
+$this->router->screen('lsaresultcomparisons', ResultComparison\LsaListScreen::class)->name('platform.lsaresultcomparison.list');
+

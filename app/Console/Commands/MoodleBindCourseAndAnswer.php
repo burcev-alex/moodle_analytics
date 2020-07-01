@@ -62,13 +62,13 @@ class MoodleBindCourseAndAnswer extends Command
                     ];
 
                     // Список пользователей которые подписаны на курс
-                    $dataEnrolledUsers = $endpoint->request('core_enrol_get_enrolled_users', ['courseid'=>$course['xml_id']], MoodleRest::METHOD_POST);
+                    $dataEnrolledUsers = $endpoint->request('wsanalyticalsystem_enrolled_users', ['courseid'=>$course['xml_id']], MoodleRest::METHOD_POST);
                     
-                    // все страницы (конспект) определенных курстов
-                    $dataCourseContents = $endpoint->request('mod_page_get_pages_by_courses', $parametersRequest, MoodleRest::METHOD_POST);
+                    // все страницы (конспект) определенных курсов
+                    $dataCourseContents = $endpoint->request('wsanalyticalsystem_pages_by_courses', $parametersRequest, MoodleRest::METHOD_POST);
 
                     // все тесты определенных курстов
-                    $dataQuizzes = $endpoint->request('mod_quiz_get_quizzes_by_courses', $parametersRequest, MoodleRest::METHOD_POST);
+                    $dataQuizzes = $endpoint->request('wsanalyticalsystem_quizzes_by_courses', $parametersRequest, MoodleRest::METHOD_POST);
                     if (count($dataQuizzes["quizzes"]) > 0) {
                         foreach ($dataQuizzes["quizzes"] as $arQuiz) {
 
@@ -82,7 +82,7 @@ class MoodleBindCourseAndAnswer extends Command
                                 ];
         
                                 // Вернуть список попыток для данного теста и пользователя.
-                                $dataAttempts = $endpoint->request('mod_quiz_get_user_attempts', $parametersUserAttempts, MoodleRest::METHOD_POST);
+                                $dataAttempts = $endpoint->request('wsanalyticalsystem_user_attempts', $parametersUserAttempts, MoodleRest::METHOD_POST);
 
                                 foreach ($dataAttempts['attempts'] as $key => $value) {
                                     // только завершенное прохождение тестов
@@ -96,7 +96,7 @@ class MoodleBindCourseAndAnswer extends Command
                                     ];
                             
                                     // Вернуть список попыток для данного теста и пользователя.
-                                    $dataAttemptReview = $endpoint->request('mod_quiz_get_attempt_review', $parametersRequest, MoodleRest::METHOD_POST);
+                                    $dataAttemptReview = $endpoint->request('wsanalyticalsystem_attempt_review', $parametersRequest, MoodleRest::METHOD_POST);
         
                                     // Вопросы на которые был дан не верный ответ
                                     $questionsIncorrectAnswers = [];
