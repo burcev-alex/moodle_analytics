@@ -71,7 +71,7 @@ class MoodleExportQuiz extends Command
 
                         // все страницы (конспект) определенных курстов
                         $dataCourseContents = $endpoint->request(
-                            'mod_page_get_pages_by_courses', 
+                            'wsanalyticalsystem_pages_by_courses', 
                             [
                                 'courseids' => [
                                     $course['xml_id']
@@ -85,6 +85,7 @@ class MoodleExportQuiz extends Command
                                 // сохраняем в Redis
                                 // вопрос и текст, где нужно найти соотвествие
                                 $object = [
+                                    'accountId' => $account['id'],
                                     'courseId' => $course['xml_id'],
                                     'questionId' => $item['id'],
                                     'questionText' => $item['name'],

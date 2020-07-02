@@ -159,7 +159,7 @@ class MoodleQuizAnalysis extends Command
                                                     Redis::hset('lsa', $stamp, $stringData);
 
                                                     // вызвать py скрипт для анализа текущей записи
-                                                    $strLsaAnalysisResult = shell_exec($_SERVER["DOCUMENT_ROOT"].'/scripts/lsa/point.py '.$stamp);
+                                                    $strLsaAnalysisResult = shell_exec("python3 ".$_SERVER["DOCUMENT_ROOT"].'/scripts/lsa/point.py '.$stamp);
                                                     $arrLsaAnalysisResult = explode("|", $strLsaAnalysisResult);
 
                                                     $object['params'] = $arrLsaAnalysisResult[1];

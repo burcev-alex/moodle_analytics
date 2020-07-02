@@ -44,8 +44,8 @@ def decode_redis(src):
 
 
 io = StringIO()
-r = redis.Redis()
-sourceData = r.hgetall("lsa")
+redisClient = redis.Redis()
+sourceData = redisClient.hgetall("moodle_analytical_database_lsa_source")
 sourceData = decode_redis(sourceData)
 resultStatus = 0
 resultParam = ''
@@ -64,13 +64,23 @@ for key in sourceData:
     resultStatus = obj.getResultStatus()
     resultParam = obj.getResultParam()
 
-    with closing(pymysql.connect(host='localhost', user='root', password='', db='moodle_services_db', charset='utf8mb4', cursorclass=DictCursor)) as connection:
-        with connection.cursor() as cursor:
-            query = "INSERT INTO lsa_result_comparisons (account_id, course_id, question_id, question_content, page_id, page_content, params, status) VALUES ("+item['accountId']+", "+item['courseId']+", "+item['questionId']+", '"+item['questionText']+"', "+item['pageId']+", '"+item['pageText']+"', "+resultParam+", "+resultStatus+")"
-            cursor.execute(query)
-            
-    r.hdel("lsa", key)
+    print(resultStatus)
+    print(resultParam)
+    print('-----------')
 
-connection.close()
+    redisClient.hdel("moodle_analytical_database_lsa_source", key)
+    
+    connection = pymysql.connect(host='localhost', user='test', password='ei7veeChu4bo', db='moodle_services_db', charset='utf8mb4', cursorclass=DictCursor)
+    
+    try:
+        with connection:
+            cur = connection.cursor()
+
+            query = "INSERT INTO lsa_result_comparisons (account_id, course_id, question_id, question_content, page_id, page_content, params, status) VALUES ("+item['accountId']+", "+item['courseId']+", "+item['questionId']+", '"+item['questionText']+"', "+item['pageId']+", '"+item['pageText']+"', "+resultParam+", "+resultStatus+")"
+
+            cur.execute(query)
+    finally:
+        connection.close()
+            
 
 print('OK')

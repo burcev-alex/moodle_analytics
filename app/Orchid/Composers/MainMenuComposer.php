@@ -54,6 +54,11 @@ class MainMenuComposer
                     ->icon('icon-list')
                     ->route('platform.lsa.list')
                     ->title('Очередь')
+            )
+            ->add(Menu::MAIN,
+                ItemMenu::label('LSA анализ (исходники)')
+                    ->icon('icon-list')
+                    ->route('platform.lsasource.list')
             );
     }
 }
