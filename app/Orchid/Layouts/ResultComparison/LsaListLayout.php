@@ -24,7 +24,7 @@ class LsaListLayout extends Table
     public function columns(): array
     {
         return [
-            TD::set('id', 'ID')
+            TD::set('id.', 'ID')
                 ->render(function (LsaResultComparison $post) {
                     return Link::make($post->id)
                         ->route('platform.lsaresultcomparison.edit', $post);
@@ -33,18 +33,24 @@ class LsaListLayout extends Table
                 ->render(function (LsaResultComparison $post) {
                     return $post->account['full_name'];
                 }),
-            TD::set('course_id', 'Курс')
-                ->render(function (LsaResultComparison $post) {
-                    return Link::make($post->full_name);
-                }),
-            TD::set('params', 'Результат')
-                ->render(function (LsaResultComparison $post) {
-                    return Link::make($post->params);
-                }),
-            TD::set('status', 'Статус')
-                ->render(function (LsaResultComparison $post) {
-                    return Link::make($post->status);
-                })
+            TD::set('course_id', 'Курс')->render(function (LsaResultComparison $post) {
+                return "<a target='_blank' href='http://".$post->account['domain']."/course/view.php?id=".$post->course_id."'>".$post->course["full_name"]."</a>";
+            }),
+            TD::set('question_id', 'Вопрос')->render(function (LsaResultComparison $post) {
+                return "<a target='_blank' href='http://".$post->account['domain']."/question/preview.php?id=".$post->question_id."&courseid=".$post->course_id."'>".$post->question_id."</a>";
+            }),
+            TD::set('page_id', 'Конспект')->render(function (LsaResultComparison $post) {
+                return "<a target='_blank' href='http://".$post->account['domain']."/mod/page/view.php?id=".$post->page_id."'>".$post->page_id."</a>";
+            }),
+            TD::set('params', 'Результат'),
+            TD::set('status', 'Статус')->render(function (LsaResultComparison $post) {
+                if(IntVal($post->status) == 1){
+                    return 'success';
+                }
+                else{
+                    return 'error';
+                }
+            }),
         ];
     }
 }

@@ -76,7 +76,7 @@ for key in sourceData:
         with connection:
             cur = connection.cursor()
 
-            query = "INSERT INTO lsa_result_comparisons (account_id, course_id, question_id, question_content, page_id, page_content, params, status) VALUES ("+item['accountId']+", "+item['courseId']+", "+item['questionId']+", '"+item['questionText']+"', "+item['pageId']+", '"+item['pageText']+"', "+resultParam+", "+resultStatus+")"
+            query = "INSERT INTO lsa_result_comparisons (account_id, course_id, question_id, question_content, page_id, page_content, params, status) VALUES ('"+str(item['accountId'])+"', '"+str(item['courseId'])+"', '"+str(item['questionId'])+"', '-', "+str(item['pageId'])+", '-', '"+str(resultParam)+"', '"+str(resultStatus)+"')"
 
             cur.execute(query)
     finally:
