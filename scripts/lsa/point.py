@@ -67,4 +67,4 @@ for key in sourceData:
 
         r.hdel("moodle_analytical_database_lsa", key)
 
-print(resultParam + '|' + resultStatus)
+print(str(resultParam) + '|' + str(resultStatus))

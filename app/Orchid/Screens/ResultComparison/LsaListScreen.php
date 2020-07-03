@@ -30,7 +30,7 @@ class LsaListScreen extends Screen
     public function query(): array
     {
         return [
-            'results' => LsaResultComparison::paginate()
+            'results' => LsaResultComparison::paginate(10)
         ];
     }
 

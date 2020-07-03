@@ -50,6 +50,8 @@ sourceData = decode_redis(sourceData)
 resultStatus = 0
 resultParam = ''
 
+print(len(sourceData))
+
 for key in sourceData:
     item = json.loads(base64.b64decode(sourceData[key]).decode('utf-8'))
 

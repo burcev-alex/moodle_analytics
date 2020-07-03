@@ -51,6 +51,8 @@ class MoodleExportQuiz extends Command
         
         $arrLsaResultComparison = LsaResultComparison::all()->toArray();
 
+        $iteration = 0;
+
         $accounts = MoodleAccount::all()->toArray();
         foreach ($accounts as $key => $account) {
 
@@ -109,18 +111,24 @@ class MoodleExportQuiz extends Command
                                 if (!$isActive) {
                                     Redis::hset('lsa_source', microtime(true), base64_encode(json_encode($object)));
                                 }
+                                $iteration++;
                             }
                         }
+
+                        $this->info('Кол-во вопросов: '.count($dataQuestions));
+                        $this->info('Кол-во конспектов: '.count($dataCourseContents['pages']));
+                        $this->info('Кол-во пересечений: '.$iteration);
+                        $this->info('==========');
                     }
                 }
 
                 unset($endpoint);
+
+
             }
             catch (\ErrorException $e){
                 dd($e->getMessage());
             }
         }
-            
-        
     }
 }
