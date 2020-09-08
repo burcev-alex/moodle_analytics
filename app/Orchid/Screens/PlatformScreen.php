@@ -67,7 +67,7 @@ class PlatformScreen extends Screen
     public function layout(): array
     {
         return [
-            Layout::view('platform::partials.update'),
+            #Layout::view('platform::partials.update'),
             Layout::view('dashboard.welcome'),
         ];
     }

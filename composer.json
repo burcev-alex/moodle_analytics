@@ -16,7 +16,8 @@
         "laravel/tinker": "^2.0",
         "llagerlof/moodlerest": "^2.3",
         "orchid/platform": "^7.2",
-        "predis/predis": "^1.1"
+        "predis/predis": "^1.1",
+        "symfony/process": "^5.1"
     },
     "require-dev": {
         "facade/ignition": "^2.0",

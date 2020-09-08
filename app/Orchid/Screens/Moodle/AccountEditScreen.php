@@ -90,13 +90,16 @@ class AccountEditScreen extends Screen
         return [
             Layout::rows([
                 Input::make('account.full_name')
-                    ->title('Название портала'),
+                    ->title('Название портала')
+                    ->placeholder('MDPU'),
 
                 Input::make('account.domain')
-                    ->title('Домен'),
+                    ->title('Домен')
+                    ->placeholder('dfn.mdpu.org.ua'),
 
                 Input::make('account.endpoint')
-                    ->title('Точка доступа (url)'),
+                    ->title('Точка доступа (url)')
+                    ->placeholder('http://dfn.mdpu.org.ua/webservice/rest/server.php'),
 
                 Input::make('account.api_key')
                     ->title('Token'),

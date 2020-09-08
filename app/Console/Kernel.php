@@ -28,18 +28,15 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         set_time_limit(0);
-        
-        // валидация прокси-серверов
-        #$schedule->command('validator:proxy')->dailyAt('03:00');
 
-        // генерация задач на день
-        #$schedule->command('generation:schedule')->dailyAt('05:00');
+        // сбор сведений о пройденных тестах
+        $schedule->command('moodle:course')->everyMinute()->between('06:00', '22:00')->withoutOverlapping();
 
-        // выполнение задач
-        #$schedule->command('visiting:page')->everyMinute()->between('7:00', '20:00');
-
-        // отчет посещения за предыдущий день
-        #$schedule->command('visiting:report')->dailyAt('06:00');
+        // обработка очередь для Python скрипта
+        $schedule->command('analytics:lsa')->everyMinute()->between('06:00', '22:00')->after(function (Schedule $schedule) {
+            // по завершению обработки, отправляем сообщение пользователю
+            $schedule->command('moodle:notes');
+          })->withoutOverlapping();
     }
 
     /**
