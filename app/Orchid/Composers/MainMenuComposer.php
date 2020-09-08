@@ -33,30 +33,30 @@ class MainMenuComposer
         // Main
         $this->dashboard->menu
             ->add(Menu::MAIN,
-                ItemMenu::label('Moodle account')
+                ItemMenu::label('Портали')
                     ->icon('icon-layers')
                     ->route('platform.moodleaccount.list')
                     ->title('Moodle')
             )
             ->add(Menu::MAIN,
-                ItemMenu::label('Курсы')
+                ItemMenu::label('Курси')
                     ->icon('icon-list')
                     ->route('platform.moodlecourse.list')
             )
             ->add(Menu::MAIN,
-                ItemMenu::label('LSA анализ базы вопросов')
+                ItemMenu::label('LSA аналіз бази питань')
                     ->icon('icon-list')
                     ->route('platform.lsaresultcomparison.list')
                     ->title('Результат')
             )
             ->add(Menu::MAIN,
-                ItemMenu::label('LSA анализ')
+                ItemMenu::label('LSA аналіз')
                     ->icon('icon-list')
                     ->route('platform.lsa.list')
                     ->title('Очередь')
             )
             ->add(Menu::MAIN,
-                ItemMenu::label('LSA анализ (исходники)')
+                ItemMenu::label('LSA аналіз (вихідні коди)')
                     ->icon('icon-list')
                     ->route('platform.lsasource.list')
             );

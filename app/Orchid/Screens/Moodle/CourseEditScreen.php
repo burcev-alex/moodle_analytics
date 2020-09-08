@@ -22,14 +22,14 @@ class CourseEditScreen extends Screen
      *
      * @var string
      */
-    public $name = 'Курсы';
+    public $name = 'Курси';
 
     /**
      * Display header description.
      *
      * @var string
      */
-    public $description = 'Курсы которые участвуют в анализе';
+    public $description = 'Курси які беруть участь в аналізі';
 
     /**
      * @var bool
@@ -48,7 +48,7 @@ class CourseEditScreen extends Screen
         $this->exists = $course->exists;
 
         if($this->exists){
-            $this->name = 'Редактировать';
+            $this->name = 'Редагувати';
         }
 
         return [
@@ -64,17 +64,17 @@ class CourseEditScreen extends Screen
     public function commandBar(): array
     {
         return [
-            Button::make('Создать')
+            Button::make('Створити')
                 ->icon('icon-pencil')
                 ->method('createOrUpdate')
                 ->canSee(!$this->exists),
 
-            Button::make('Редактировать')
+            Button::make('Редагувати')
                 ->icon('icon-note')
                 ->method('createOrUpdate')
                 ->canSee($this->exists),
 
-            Button::make('Удалить')
+            Button::make('Видалити')
                 ->icon('icon-trash')
                 ->method('remove')
                 ->canSee($this->exists),
@@ -95,10 +95,10 @@ class CourseEditScreen extends Screen
                     ->fromModel(MoodleAccount::class, 'full_name'),
 
                 Input::make('course.full_name')
-                    ->title('Название курса'),
+                    ->title('Назва курсу'),
 
                 Input::make('course.xml_id')
-                    ->title('ID курса во внешней системе'),
+                    ->title('ID курсу у зовнішній системі'),
             ])
         ];
     }
@@ -113,7 +113,7 @@ class CourseEditScreen extends Screen
     {
         $course->fill($request->get('course'))->save();
 
-        Alert::info('Ваши данные успешно сохранены');
+        Alert::info('Ваші дані успішно збережені');
 
         return redirect()->route('platform.moodlecourse.list');
     }
@@ -127,8 +127,8 @@ class CourseEditScreen extends Screen
     public function remove(MoodleCourse $course)
     {
         $course->delete()
-            ? Alert::info('Вы успешно удалили запись.')
-            : Alert::warning('Произошла ошибка')
+            ? Alert::info('Ви успішно видалили запис.')
+            : Alert::warning('Виникла помилка')
         ;
 
         return redirect()->route('platform.moodlecourse.list');

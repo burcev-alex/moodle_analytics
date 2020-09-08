@@ -20,7 +20,7 @@ class AccountListScreen extends Screen
      *
      * @var string
      */
-    public $description = 'Порталы по которым ведется анализ пройденных тестов';
+    public $description = 'Портали за якими ведеться аналіз пройдених тестів';
 
     /**
      * Query data.
@@ -42,7 +42,7 @@ class AccountListScreen extends Screen
     public function commandBar(): array
     {
         return [
-            Link::make('Добавить')
+            Link::make('Додати')
                 ->icon('icon-pencil')
                 ->route('platform.moodleaccount.edit')
         ];

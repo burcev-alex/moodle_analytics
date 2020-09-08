@@ -22,7 +22,7 @@ class AccountListLayout extends Table
     public function columns(): array
     {
         return [
-            TD::set('full_name', 'Название портала')
+            TD::set('full_name', 'Назва порталу')
                 ->render(function (MoodleAccount $user) {
                     return Link::make($user->full_name)
                         ->route('platform.moodleaccount.edit', $user);

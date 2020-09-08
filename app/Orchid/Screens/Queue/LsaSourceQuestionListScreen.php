@@ -17,14 +17,14 @@ class LsaSourceQuestionListScreen extends Screen
      *
      * @var string
      */
-    public $name = 'Очередь LSA анализа. Исходники';
+    public $name = 'Черга LSA аналізу. Вихідні тексти';
 
     /**
      * Display header description.
      *
      * @var string
      */
-    public $description = 'Команды для скрипта анализа данных';
+    public $description = 'Команди для скрипта аналізу даних';
 
     /**
      * Query data.

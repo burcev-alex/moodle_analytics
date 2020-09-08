@@ -23,14 +23,14 @@ class LsaEditScreen extends Screen
      *
      * @var string
      */
-    public $name = 'Результат LSA анализа';
+    public $name = 'Результат LSA аналізу';
 
     /**
      * Display header description.
      *
      * @var string
      */
-    public $description = 'Совпадение вопрос-конспекта';
+    public $description = 'Збіг питання-конспекту';
 
     /**
      * @var bool
@@ -49,7 +49,7 @@ class LsaEditScreen extends Screen
         $this->exists = $lsaResult->exists;
 
         if($this->exists){
-            $this->name = 'Редактировать';
+            $this->name = 'Редагувати';
         }
 
         return [
@@ -65,12 +65,12 @@ class LsaEditScreen extends Screen
     public function commandBar(): array
     {
         return [
-            Button::make('Редактировать')
+            Button::make('Редагувати')
                 ->icon('icon-note')
                 ->method('createOrUpdate')
                 ->canSee($this->exists),
 
-            Button::make('Удалить')
+            Button::make('Видалити')
                 ->icon('icon-trash')
                 ->method('remove')
                 ->canSee($this->exists),
