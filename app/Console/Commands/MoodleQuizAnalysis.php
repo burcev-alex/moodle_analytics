@@ -6,19 +6,22 @@ use MoodleRest;
 use Mail;
 use App\MoodleAccount;
 use App\MoodleCourse;
+use App\Notes;
+use App\LsaResultComparison;
+use App\Note;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Redis;
 
-class MoodleBindCourseAndAnswer extends Command
+class MoodleQuizAnalysis extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'moodle:course';
+    protected $signature = 'moodle:quiz_analysis';
 
     /**
      * The console command description.
@@ -47,7 +50,8 @@ class MoodleBindCourseAndAnswer extends Command
     public function handle()
     {
         $courses = MoodleCourse::all()->toArray();
-        $dataCourseContents = [];
+
+        $arrLsaResultComparison = LsaResultComparison::all()->toArray();
 
         $accounts = MoodleAccount::all()->toArray();
         foreach ($accounts as $key => $account) {
@@ -62,13 +66,13 @@ class MoodleBindCourseAndAnswer extends Command
                     ];
 
                     // Список пользователей которые подписаны на курс
-                    $dataEnrolledUsers = $endpoint->request('core_enrol_get_enrolled_users', ['courseid'=>$course['xml_id']], MoodleRest::METHOD_POST);
+                    $dataEnrolledUsers = $endpoint->request('wsanalyticalsystem_enrolled_users', ['courseid'=>$course['xml_id']], MoodleRest::METHOD_POST);
                     
-                    // все страницы (конспект) определенных курстов
-                    $dataCourseContents = $endpoint->request('mod_page_get_pages_by_courses', $parametersRequest, MoodleRest::METHOD_POST);
+                    // все страницы (конспект) определенных курсов
+                    $dataCourseContents = $endpoint->request('wsanalyticalsystem_pages_by_courses', $parametersRequest, MoodleRest::METHOD_POST);
 
                     // все тесты определенных курстов
-                    $dataQuizzes = $endpoint->request('mod_quiz_get_quizzes_by_courses', $parametersRequest, MoodleRest::METHOD_POST);
+                    $dataQuizzes = $endpoint->request('wsanalyticalsystem_quizzes_by_courses', $parametersRequest, MoodleRest::METHOD_POST);
                     if (count($dataQuizzes["quizzes"]) > 0) {
                         foreach ($dataQuizzes["quizzes"] as $arQuiz) {
 
@@ -82,7 +86,7 @@ class MoodleBindCourseAndAnswer extends Command
                                 ];
         
                                 // Вернуть список попыток для данного теста и пользователя.
-                                $dataAttempts = $endpoint->request('mod_quiz_get_user_attempts', $parametersUserAttempts, MoodleRest::METHOD_POST);
+                                $dataAttempts = $endpoint->request('wsanalyticalsystem_user_attempts', $parametersUserAttempts, MoodleRest::METHOD_POST);
 
                                 foreach ($dataAttempts['attempts'] as $key => $value) {
                                     // только завершенное прохождение тестов
@@ -96,7 +100,7 @@ class MoodleBindCourseAndAnswer extends Command
                                     ];
                             
                                     // Вернуть список попыток для данного теста и пользователя.
-                                    $dataAttemptReview = $endpoint->request('mod_quiz_get_attempt_review', $parametersRequest, MoodleRest::METHOD_POST);
+                                    $dataAttemptReview = $endpoint->request('wsanalyticalsystem_attempt_review', $parametersRequest, MoodleRest::METHOD_POST);
         
                                     // Вопросы на которые был дан не верный ответ
                                     $questionsIncorrectAnswers = [];
@@ -115,11 +119,13 @@ class MoodleBindCourseAndAnswer extends Command
                                     }
         
                                     if (count($questionsIncorrectAnswers) > 0) {
+                                        $resultData = [];
                                         foreach ($questionsIncorrectAnswers as $k=>$text) {
                                             foreach ($dataCourseContents['pages'] as $arPage) {
                                                 // сохраняем в Redis
                                                 // вопрос и текст, где нужно найти соотвествие
                                                 $object = [
+<<<<<<< HEAD:app/Console/Commands/MoodleBindCourseAndAnswer.php
                                                     'accountId' => $account['id'], // портал Moodle
                                                     'userId' => $itemUser['id'], // пользователь
                                                     'courseId' => $course['xml_id'], // курс
@@ -128,10 +134,79 @@ class MoodleBindCourseAndAnswer extends Command
                                                     'questionText' => $text, // вопрос - текст
                                                     'attemptId' => $value['id'], // вариант ответа
                                                     'pageId' => $arPage['coursemodule'], // страница конспекта
+=======
+                                                    'accountId' => $account['id'],
+                                                    'userId' => $itemUser['id'],
+                                                    'pageId' => $arPage['coursemodule'],
+                                                    'courseId' => $course['xml_id'],
+                                                    'quizId' => $arQuiz['id'],
+                                                    'questionId' => $questionsIncorrectAnswersId[$k],
+                                                    'questionText' => $text,
+                                                    'attemptId' => $value['id'],
+>>>>>>> 02144d003f20d7c0685aad1958c4d58f887732b2:app/Console/Commands/MoodleQuizAnalysis.php
                                                     'pageText' => strip_tags(str_replace("&nbsp;", " ", htmlspecialchars_decode($arPage['content'])))
                                                 ];
 
-                                                Redis::hset('lsa', microtime(true), base64_encode(json_encode($object)));
+                                                // найти результата в базе вопрос-конспект
+                                                $isActive = false;
+                                                $tmpRes = [];
+
+                                                foreach($arrLsaResultComparison as $itemResult){
+                                                    if(
+                                                        $itemResult['account_id'] == $account['id'] && 
+                                                        $itemResult['course_id'] == $course['id'] && 
+                                                        $itemResult['question_id'] == $questionsIncorrectAnswersId[$k] && 
+                                                        $itemResult['page_id'] == $arPage['coursemodule']
+                                                    ){
+                                                        $isActive = true;
+                                                        $tmpRes = $itemResult;
+                                                    }
+                                                }
+
+                                                if (!$isActive) {
+                                                    $stamp = microtime(true);
+                                                    $stringData = base64_encode(json_encode($object));
+
+                                                    Redis::hset('lsa', $stamp, $stringData);
+
+                                                    // вызвать py скрипт для анализа текущей записи
+                                                    $strLsaAnalysisResult = shell_exec("python3 /var/www/html/scripts/lsa/point.py ".$stamp);
+                                                    $arrLsaAnalysisResult = explode("|", $strLsaAnalysisResult);
+
+                                                    $object['params'] = $arrLsaAnalysisResult[1];
+                                                    $object['status'] = $arrLsaAnalysisResult[0];
+                                                }
+                                                else{
+                                                    $object['params'] = $tmpRes['params'];
+                                                    $object['status'] = $tmpRes['status'];
+                                                }
+
+                                                // если результат сравнения не соответствует вопрос-компект,
+                                                // тогда этот объект незаносим в коллекцию 
+                                                // формирования конечного уведомления
+                                                if (IntVal($object['status']) > 0) {
+                                                    $resultData[] = $object;
+                                                }
+                                            }
+                                        }
+
+                                        // записываем в БД notes
+                                        if(count($resultData) > 0){
+                                            // save
+                                            foreach($resultData as $item){
+                                                $note = new Note;
+
+                                                $note->account_id = $item['accountId'];
+                                                $note->course_id = $item['courseId'];
+                                                $note->user_id = $item['userId'];
+                                                $note->quiz_id = $item['quizId'];
+                                                $note->page_id = $item['pageId'];
+                                                $note->question_content = $item['questionText'];
+                                                $note->question_id = $item['questionId'];
+                                                $note->attempt_id = $item['attemptId'];
+                                                $note->status = 'ready';
+                                                
+                                                $note->save();
                                             }
                                         }
                                     }
@@ -142,24 +217,20 @@ class MoodleBindCourseAndAnswer extends Command
                 }
             }
 
-            
-
             unset($endpoint);
         }
             
-        $countLine = count($courses);
+        $countLine = count($dataCourseContents['pages']);
 
         $count = 0;
-        #dd(count($dataCourseContents['pages']));
 
         foreach ($dataCourseContents['pages'] as $key => $data) {
             $bar = $this->output->createProgressBar($countLine);
             
         }
 
-        if (count($courses) > 0) {
+        if (count($dataCourseContents['pages']) > 0) {
             $bar->advance();
-
             $bar->finish();
         }
     }

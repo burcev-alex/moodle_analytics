@@ -28,6 +28,7 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         set_time_limit(0);
+<<<<<<< HEAD
 
         // сбор сведений о пройденных тестах
         $schedule->command('moodle:course')->everyMinute()->between('06:00', '22:00')->withoutOverlapping();
@@ -37,6 +38,17 @@ class Kernel extends ConsoleKernel
             // по завершению обработки, отправляем сообщение пользователю
             $schedule->command('moodle:notes');
           })->withoutOverlapping();
+=======
+        
+        // выгрузка вопрос-конспект для LSA анализа
+        $schedule->command('moodle:export_quiz')->dailyAt('22:00');
+
+        // поиск пройденных тестов, сбор статистики
+        $schedule->command('moodle:quiz_analysis')->everyMinute()->between('7:00', '20:00');
+
+        // отчет анализа, отправка уведомления пользователю проходивший тест
+        $schedule->command('moodle:notes')->everyMinute()->between('7:00', '22:00');
+>>>>>>> 02144d003f20d7c0685aad1958c4d58f887732b2
     }
 
     /**

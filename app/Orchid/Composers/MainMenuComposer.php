@@ -44,10 +44,21 @@ class MainMenuComposer
                     ->route('platform.moodlecourse.list')
             )
             ->add(Menu::MAIN,
+                ItemMenu::label('LSA анализ базы вопросов')
+                    ->icon('icon-list')
+                    ->route('platform.lsaresultcomparison.list')
+                    ->title('Результат')
+            )
+            ->add(Menu::MAIN,
                 ItemMenu::label('LSA анализ')
                     ->icon('icon-list')
                     ->route('platform.lsa.list')
                     ->title('Очередь')
+            )
+            ->add(Menu::MAIN,
+                ItemMenu::label('LSA анализ (исходники)')
+                    ->icon('icon-list')
+                    ->route('platform.lsasource.list')
             );
     }
 }
