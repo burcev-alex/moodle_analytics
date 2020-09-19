@@ -28,15 +28,15 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         set_time_limit(0);
-        
-        // выгрузка вопрос-конспект для LSA анализа
-        $schedule->command('moodle:export_quiz')->dailyAt('22:00');
 
-        // поиск пройденных тестов, сбор статистики
-        $schedule->command('moodle:quiz_analysis')->everyMinute()->between('7:00', '20:00');
+        // сбор сведений о пройденных тестах
+        $schedule->command('moodle:course')->everyMinute()->between('06:00', '22:00')->withoutOverlapping();
 
-        // отчет анализа, отправка уведомления пользователю проходивший тест
-        $schedule->command('moodle:notes')->everyMinute()->between('7:00', '22:00');
+        // обработка очередь для Python скрипта
+        $schedule->command('analytics:lsa')->everyMinute()->between('06:00', '22:00')->after(function (Schedule $schedule) {
+            // по завершению обработки, отправляем сообщение пользователю
+            $schedule->command('moodle:notes');
+          })->withoutOverlapping();
     }
 
     /**

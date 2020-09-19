@@ -23,11 +23,11 @@ class LsaSourceQuestionListLayout extends Table
     public function columns(): array
     {
         return [
-            TD::set('pageId', 'Страница'),
+            TD::set('pageId', 'Сторінка'),
             TD::set('courseId', 'Курс'),
             TD::set('quizId', 'Тест'),
-            TD::set('questionText', 'Вопрос'),
-            TD::set('attemptId', 'Ответ #'),
+            TD::set('questionText', 'Питання'),
+            TD::set('attemptId', 'Відповідь #'),
             TD::set('pageText', 'Конспект'),
         ];
     }

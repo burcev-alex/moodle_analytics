@@ -13,14 +13,14 @@ class LsaListScreen extends Screen
      *
      * @var string
      */
-    public $name = 'Результат LSA анализа';
+    public $name = 'Результат LSA аналізу';
 
     /**
      * Display header description.
      *
      * @var string
      */
-    public $description = 'Совпадение вопрос-конспекта';
+    public $description = 'Збіг питання-конспекту';
 
     /**
      * Query data.

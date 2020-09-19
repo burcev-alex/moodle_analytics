@@ -21,14 +21,14 @@ class AccountEditScreen extends Screen
      *
      * @var string
      */
-    public $name = 'Курсы';
+    public $name = 'Портали';
 
     /**
      * Display header description.
      *
      * @var string
      */
-    public $description = 'Порталы по которым ведется анализ пройденных тестов';
+    public $description = 'Портали за якими ведеться аналіз пройдених тестів';
 
     /**
      * @var bool
@@ -47,7 +47,7 @@ class AccountEditScreen extends Screen
         $this->exists = $account->exists;
 
         if($this->exists){
-            $this->name = 'Редактировать';
+            $this->name = 'Редагувати';
         }
 
         return [
@@ -63,17 +63,17 @@ class AccountEditScreen extends Screen
     public function commandBar(): array
     {
         return [
-            Button::make('Создать')
+            Button::make('Створити')
                 ->icon('icon-pencil')
                 ->method('createOrUpdate')
                 ->canSee(!$this->exists),
 
-            Button::make('Редактировать')
+            Button::make('Редагувати')
                 ->icon('icon-note')
                 ->method('createOrUpdate')
                 ->canSee($this->exists),
 
-            Button::make('Удалить')
+            Button::make('Видалити')
                 ->icon('icon-trash')
                 ->method('remove')
                 ->canSee($this->exists),
@@ -90,13 +90,16 @@ class AccountEditScreen extends Screen
         return [
             Layout::rows([
                 Input::make('account.full_name')
-                    ->title('Название портала'),
+                    ->title('Назва порталу')
+                    ->placeholder('MDPU'),
 
                 Input::make('account.domain')
-                    ->title('Домен'),
+                    ->title('Домен')
+                    ->placeholder('dfn.mdpu.org.ua'),
 
                 Input::make('account.endpoint')
-                    ->title('Точка доступа (url)'),
+                    ->title('Точка доступу (url)')
+                    ->placeholder('http://dfn.mdpu.org.ua/webservice/rest/server.php'),
 
                 Input::make('account.api_key')
                     ->title('Token'),
@@ -115,7 +118,7 @@ class AccountEditScreen extends Screen
     {
         $account->fill($request->get('account'))->save();
 
-        Alert::info('Ваши данные успешно сохранены');
+        Alert::info('Ваші дані успішно збережені');
 
         return redirect()->route('platform.moodleaccount.list');
     }
@@ -129,8 +132,8 @@ class AccountEditScreen extends Screen
     public function remove(MoodleAccount $account)
     {
         $account->delete()
-            ? Alert::info('Вы успешно удалили запись.')
-            : Alert::warning('Произошла ошибка')
+            ? Alert::info('Ви успішно видалили запис.')
+            : Alert::warning('Виникла помилка')
         ;
 
         return redirect()->route('platform.moodleaccount.list');

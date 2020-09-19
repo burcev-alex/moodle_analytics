@@ -13,14 +13,14 @@ class CourseListScreen extends Screen
      *
      * @var string
      */
-    public $name = 'Курсы';
+    public $name = 'Курси';
 
     /**
      * Display header description.
      *
      * @var string
      */
-    public $description = 'Курсы которые участвуют в анализе';
+    public $description = 'Курси які беруть участь в аналізі';
 
     /**
      * Query data.
@@ -42,7 +42,7 @@ class CourseListScreen extends Screen
     public function commandBar(): array
     {
         return [
-            Link::make('Добавить')
+            Link::make('Додати')
                 ->icon('icon-pencil')
                 ->route('platform.moodlecourse.edit')
         ];

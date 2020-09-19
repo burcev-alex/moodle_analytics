@@ -26,7 +26,7 @@ class CourseListLayout extends Table
                 ->render(function (MoodleCourse $post) {
                     return $post->account['full_name'];
                 }),
-            TD::set('full_name', 'Название курса')
+            TD::set('full_name', 'Назва курсу')
                 ->render(function (MoodleCourse $post) {
                     return Link::make($post->full_name)
                         ->route('platform.moodlecourse.edit', $post);
