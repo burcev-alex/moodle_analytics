@@ -20,6 +20,7 @@ from ukrstemmer import UkrainianStemmer
 from lsa import LSA
 import pymysql
 from pymysql.cursors import DictCursor
+from multiprocessing import Pool
 
 start_time = datetime.now()
 
@@ -43,17 +44,13 @@ def decode_redis(src):
         raise Exception("type not handled: " + type(src))
 
 
-io = StringIO()
-redisClient = redis.Redis()
-sourceData = redisClient.hgetall("moodle_analytical_database_lsa_source")
-sourceData = decode_redis(sourceData)
-resultStatus = 0
-resultParam = ''
+def build(source):
+    redisClient = redis.Redis()
 
-print(len(sourceData))
+    key = source['key']
+    data = source['value']
 
-for key in sourceData:
-    item = json.loads(base64.b64decode(sourceData[key]).decode('utf-8'))
+    item = json.loads(base64.b64decode(data).decode('utf-8'))
 
     docs = [
         item['questionText'],
@@ -71,9 +68,9 @@ for key in sourceData:
     print('-----------')
 
     redisClient.hdel("moodle_analytical_database_lsa_source", key)
-    
+        
     connection = pymysql.connect(host='localhost', user='test', password='ei7veeChu4bo', db='moodle_services_db', charset='utf8mb4', cursorclass=DictCursor)
-    
+        
     try:
         with connection:
             cur = connection.cursor()
@@ -83,6 +80,26 @@ for key in sourceData:
             cur.execute(query)
     finally:
         connection.close()
-            
 
-print('OK')
+
+if __name__ == '__main__':
+    redisClient = redis.Redis()
+    sourceData = redisClient.hgetall("moodle_analytical_database_lsa_source")
+    sourceData = decode_redis(sourceData)
+
+    pool = Pool()
+
+    # создание многомерного массива
+    source = []
+    iteration = 0
+    for key in sourceData:
+        iteration = iteration + 1
+        source.append({'key': key, 'value': sourceData[key]})
+
+    print(len(source))
+
+    pool.map(build, source)
+    pool.close()
+    pool.join()
+    
+    print('OK')
