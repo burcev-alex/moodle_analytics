@@ -125,16 +125,6 @@ class MoodleQuizAnalysis extends Command
                                                 // сохраняем в Redis
                                                 // вопрос и текст, где нужно найти соотвествие
                                                 $object = [
-<<<<<<< HEAD:app/Console/Commands/MoodleBindCourseAndAnswer.php
-                                                    'accountId' => $account['id'], // портал Moodle
-                                                    'userId' => $itemUser['id'], // пользователь
-                                                    'courseId' => $course['xml_id'], // курс
-                                                    'quizId' => $arQuiz['id'], // тест
-                                                    'questionId' => $questionsIncorrectAnswersId[$k], // вопрос ID
-                                                    'questionText' => $text, // вопрос - текст
-                                                    'attemptId' => $value['id'], // вариант ответа
-                                                    'pageId' => $arPage['coursemodule'], // страница конспекта
-=======
                                                     'accountId' => $account['id'],
                                                     'userId' => $itemUser['id'],
                                                     'pageId' => $arPage['coursemodule'],
@@ -143,7 +133,6 @@ class MoodleQuizAnalysis extends Command
                                                     'questionId' => $questionsIncorrectAnswersId[$k],
                                                     'questionText' => $text,
                                                     'attemptId' => $value['id'],
->>>>>>> 02144d003f20d7c0685aad1958c4d58f887732b2:app/Console/Commands/MoodleQuizAnalysis.php
                                                     'pageText' => strip_tags(str_replace("&nbsp;", " ", htmlspecialchars_decode($arPage['content'])))
                                                 ];
 

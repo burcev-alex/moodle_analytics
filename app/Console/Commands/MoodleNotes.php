@@ -5,12 +5,9 @@ namespace App\Console\Commands;
 use MoodleRest;
 use Mail;
 use App\MoodleAccount;
-<<<<<<< HEAD
-=======
 use App\Note;
 use PDF;
 use Storage;
->>>>>>> 02144d003f20d7c0685aad1958c4d58f887732b2
 use App\MoodleCourse;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Log;
@@ -31,11 +28,7 @@ class MoodleNotes extends Command
      *
      * @var string
      */
-<<<<<<< HEAD
-    protected $description = 'Отправка сообщений пользователю moodle';
-=======
     protected $description = 'Отправка уведомлений пользователям о прохождении тестов и рекомендательом письме';
->>>>>>> 02144d003f20d7c0685aad1958c4d58f887732b2
 
     protected $rows;
 
@@ -56,23 +49,6 @@ class MoodleNotes extends Command
      */
     public function handle()
     {
-<<<<<<< HEAD
-        $accounts = MoodleAccount::all()->toArray();
-
-        $queue = Redis::hgetall('notes');
-        $countLine = count($queue);
-        
-        foreach ($queue as $key => $item) {
-            dd($item);
-            $bar = $this->output->createProgressBar($countLine);
-        }
-
-        if (count($queue) > 0) {
-            $bar->advance();
-
-            $bar->finish();
-        }
-=======
         
         $notes = Note::all();
 
@@ -135,7 +111,7 @@ class MoodleNotes extends Command
                         $questions[] = $dataQuestion;
                     }
 
-                    $courseName = "Меиа";
+                    $courseName = "Медиа";
                     $quizId = $dataQuizId;
                     $dateCreate = date('d.m.Y');
 
@@ -172,6 +148,5 @@ class MoodleNotes extends Command
         }
             
         
->>>>>>> 02144d003f20d7c0685aad1958c4d58f887732b2
     }
 }
