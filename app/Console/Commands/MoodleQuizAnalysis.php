@@ -72,7 +72,7 @@ class MoodleQuizAnalysis extends Command
                     $dataCourseContents = $endpoint->request('wsanalyticalsystem_pages_by_courses', $parametersRequest, MoodleRest::METHOD_POST);
 
                     // все тесты определенных курстов
-                    $dataQuizzes = $endpoint->request('wsanalyticalsystem_quizzes_by_courses', $parametersRequest, MoodleRest::METHOD_POST);
+					$dataQuizzes = $endpoint->request('wsanalyticalsystem_quizzes_by_courses', $parametersRequest, MoodleRest::METHOD_POST);
                     if (count($dataQuizzes["quizzes"]) > 0) {
                         foreach ($dataQuizzes["quizzes"] as $arQuiz) {
 

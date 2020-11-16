@@ -12,6 +12,7 @@ from numpy import *
 from sklearn.cluster import KMeans
 import nltk
 import redis
+import random
 import scipy
 from nltk.corpus import brown
 from datetime import datetime
