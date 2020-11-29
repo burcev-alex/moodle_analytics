@@ -96,7 +96,7 @@ if __name__ == '__main__':
         iteration = iteration + 1
         source.append({'key': key, 'value': sourceData[key]})
 
-    print(len(source))
+    #print(len(source))
 
     pool.map(build, source)
     pool.close()

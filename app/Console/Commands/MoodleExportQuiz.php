@@ -89,11 +89,23 @@ class MoodleExportQuiz extends Command
                                 $object = [
                                     'accountId' => $account['id'],
                                     'courseId' => $course['xml_id'],
-                                    'questionId' => $item['id'],
+									'questionId' => $item['id'],
                                     'questionText' => $item['name'],
                                     'pageId' => $arPage['coursemodule'],
                                     'pageText' => strip_tags(str_replace("&nbsp;", " ", htmlspecialchars_decode($arPage['content'])))
-                                ];
+								];
+								
+								$cacheKey = [
+									$object['accountId'],
+									$object['courseId'],
+									$object['questionId'],
+									$object['pageId']
+								];
+								$stamp = md5(serialize($cacheKey));
+
+								if(Redis::hget('lsa_source', $stamp)){
+									continue;
+								}
 
                                 // найти соответствие, возможно уже был выполнен анализ
                                 $isActive = false;
@@ -109,7 +121,7 @@ class MoodleExportQuiz extends Command
                                 }
 
                                 if (!$isActive) {
-                                    Redis::hset('lsa_source', microtime(true), base64_encode(json_encode($object)));
+                                    Redis::hset('lsa_source', $stamp, base64_encode(json_encode($object)));
                                 }
                                 $iteration++;
                             }

@@ -38,15 +38,15 @@ class LsaSourceQuestionListScreen extends Screen
 
         $iteration = 0;
         foreach($data as $key=>$object){
-            $item = json_decode(base64_decode($object), true);
+			$item = json_decode(base64_decode($object), true);
 
             $element = new Repository([
                 'pageId' => $item['pageId'],
                 'courseId' => $item['courseId'],
-                'quizId' => $item['quizId'],
+                'quizId' => array_key_exists('quizId', $item) ? $item['quizId'] : '',
                 'questionId' => $item['questionId'],
                 'questionText' => $item['questionText'],
-                'attemptId' => $item['attemptId'],
+                'attemptId' => array_key_exists('attemptId', $item) ? $item['attemptId'] : '',
                 'pageText' => substr($item['pageText'], 0, 100).'...'
             ]);
 

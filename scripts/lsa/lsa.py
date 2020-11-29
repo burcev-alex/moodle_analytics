@@ -15,6 +15,7 @@ import redis
 import scipy
 from nltk.corpus import brown
 from datetime import datetime
+import random
 import time
 from ukrstemmer import UkrainianStemmer
 
@@ -35,7 +36,21 @@ class LSA:
         t = " "
         word = nltk.word_tokenize((' ').join(self.doc))
         stopword = [UkrainianStemmer(w).stem_word().lower() for w in self.stopwords]
-        return self.WordStopDoc(t, stopword)
+        
+        # TEST
+        tmp = random.randint(0, 1000)
+        if tmp%2 == 0:
+            self.status = 1
+        else:
+            self.status = 0
+
+        if self.status == 1:
+            self.param = 0.56
+        else:
+            self.param = 0.1
+
+        return self.status
+        #return self.WordStopDoc(t, stopword)
 
     def word_1(self):
         word = nltk.word_tokenize((' ').join(self.doc))

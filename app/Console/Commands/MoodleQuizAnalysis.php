@@ -107,16 +107,19 @@ class MoodleQuizAnalysis extends Command
                                     $questionsIncorrectAnswersId = [];
                                     foreach ($dataAttemptReview['questions'] as $arQuestion) {
                                         // собрать список вопросов, по которым был дан не верный ответ
-                                        if ($arQuestion['status'] == 'Incorrect') {
+                                        if (
+											($arQuestion['status'] == 'Incorrect') || 
+											($arQuestion['status'] == 'Partially correct')
+											) {
                                             // сделано через костыль, решение не универсальное
                                             $tmp = explode('class="qtext">', $arQuestion['html']);
                                             $tmp2 =explode('<div class="ablock">', $tmp[1]);
                                             $textQuestion = strip_tags(str_replace("&nbsp;", " ", htmlspecialchars_decode($tmp2[0])));
         
                                             $questionsIncorrectAnswers[] = $textQuestion;
-                                            $questionsIncorrectAnswersId[] = $arQuestion['number'];
+                                            $questionsIncorrectAnswersId[] = $arQuestion['parentQuestionid'];
                                         }
-                                    }
+									}
         
                                     if (count($questionsIncorrectAnswers) > 0) {
                                         $resultData = [];
@@ -135,6 +138,16 @@ class MoodleQuizAnalysis extends Command
                                                     'pageId' => $arPage['coursemodule'], // страница конспекта
                                                     'pageText' => strip_tags(str_replace("&nbsp;", " ", htmlspecialchars_decode($arPage['content'])))
                                                 ];
+                                                
+                                                $cacheKey = [
+                                                    $account['id'],
+                                                    $itemUser['id'],
+                                                    $course['xml_id'],
+                                                    $arQuiz['id'],
+                                                    $questionsIncorrectAnswersId[$k],
+                                                    $value['id'],
+                                                    $arPage['coursemodule']
+                                                ];
 
                                                 // найти результата в базе вопрос-конспект
                                                 $isActive = false;
@@ -142,24 +155,26 @@ class MoodleQuizAnalysis extends Command
 
                                                 foreach($arrLsaResultComparison as $itemResult){
                                                     if(
-                                                        $itemResult['account_id'] == $account['id'] && 
-                                                        $itemResult['course_id'] == $course['id'] && 
-                                                        $itemResult['question_id'] == $questionsIncorrectAnswersId[$k] && 
-                                                        $itemResult['page_id'] == $arPage['coursemodule']
+                                                        (IntVal($itemResult['account_id']) === IntVal($object['accountId'])) && 
+                                                        (IntVal($itemResult['course_id']) === IntVal($object['courseId'])) && 
+                                                        (IntVal($itemResult['question_id']) === IntVal($object['questionId'])) && 
+                                                        (IntVal($itemResult['page_id']) === IntVal($object['pageId']))
                                                     ){
                                                         $isActive = true;
                                                         $tmpRes = $itemResult;
                                                     }
                                                 }
 
+                                                $stamp = md5(serialize($cacheKey));
+
                                                 if (!$isActive) {
-                                                    $stamp = microtime(true);
                                                     $stringData = base64_encode(json_encode($object));
 
                                                     Redis::hset('lsa', $stamp, $stringData);
 
                                                     // вызвать py скрипт для анализа текущей записи
-                                                    $strLsaAnalysisResult = shell_exec("python3 /var/www/html/scripts/lsa/point.py ".$stamp);
+                                                    $command = 'C:/Python38/python '.str_replace("\\", "/", base_path()).'/scripts/lsa/point.py '.$stamp;
+                                                    $strLsaAnalysisResult = shell_exec($command);
                                                     $arrLsaAnalysisResult = explode("|", $strLsaAnalysisResult);
 
                                                     $object['params'] = $arrLsaAnalysisResult[1];
@@ -222,5 +237,9 @@ class MoodleQuizAnalysis extends Command
             $bar->advance();
             $bar->finish();
         }
+    }
+
+    private function p($object){
+        echo '<pre>'.print_r($object, true).'</pre>';
     }
 }

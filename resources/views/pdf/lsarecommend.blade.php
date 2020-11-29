@@ -1,18 +1,21 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Рекоммендации по изучению темы</title>
+    <title>Рекомендації з вивчення теми</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <style>
     body { font-family: DejaVu Sans, sans-serif; }
+	table, tr, td, th, tbody, thead, tfoot {
+		page-break-inside: avoid !important;
+	}
   </style>
 <body>
     <div style="width: 100%; max-width: 960px; margin: auto">
         <table width="100%">
             <tr style="border-bottom: 1px solid #000000">
-                <td><h2>Тестовое задание</h2></td>
+                <td><h2>Тестове завдання</h2></td>
             <td style="text-align: right"><h3># {{ $quizId }}</h3></td>
             </tr>
             <tr>
@@ -22,12 +25,12 @@
                 </td>
                 <td style="text-align: right">
                     <strong>Дата:</strong><br>
-                    03.07.2020<br><br>
+                    {{ $dateCreate }}<br><br>
                 </td>
             </tr>
             <tr>
                 <td colspan="2">
-                    <h3>Вопросы</h3>
+                    <h3>Питання</h3>
                 </td>
             </tr>
             <tr>

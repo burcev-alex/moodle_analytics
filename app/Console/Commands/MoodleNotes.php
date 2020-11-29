@@ -61,18 +61,28 @@ class MoodleNotes extends Command
                 'question_content' => $value->question_content,
                 'page_id' => $value->page_id,
             ];
-            $data[$value->user_id][$value->quiz_id]['account'] = $value->account_id;
-            $data[$value->user_id][$value->quiz_id]['course'] = $value->course['full_name'];
+            $data[$value->user_id][$value->quiz_id]['account_id'] = $value->account_id;
+            $data[$value->user_id][$value->quiz_id]['course_id'] = $value->course_id;
         }
 
+        $courses = MoodleCourse::all()->toArray();
         $accounts = MoodleAccount::all()->toArray();
+        
         foreach ($data as $userId => $quiz) {
             foreach ($quiz as $dataQuizId => $items) {
+
+                // найти данные по курсу
+                $courseItem = [];
+                foreach ($courses as $course) {
+                    if($course['xml_id'] == $items['course_id']){
+                        $courseItem = $course;
+                    }
+                }
 
                 // найти данные аккаунта
                 $itemAccount = [];
                 foreach ($accounts as $value) {
-                    if ($value['id'] == $items['account']) {
+                    if ($value['id'] == $items['account_id']) {
                         $itemAccount = $value;
                     }
                 }
@@ -93,25 +103,25 @@ class MoodleNotes extends Command
                     $questions = [];
                     foreach ($sourceQuestions as $questionId => $item) {
                         $dataQuestion = [
-                        'name' => $item['text'],
-                        'id' => $item['id'],
-                        'pages' => []
-                    ];
+                            'name' => $item['text'],
+                            'id' => $item['id'],
+                            'pages' => []
+                        ];
 
                         $iteration = 0;
                         foreach ($item['pages'] as $pageId) {
                             $iteration++;
                             $dataQuestion['pages'][] = [
-                            'title' => 'Конспект №'.$iteration,
-                            'id' => $pageId,
-                            'link' => '/mod/page/view.php?id='.$pageId
-                        ];
+                                'title' => 'Конспект №'.$iteration,
+                                'id' => $pageId,
+                                'link' => 'http://'.$itemAccount['domain'].'/mod/page/view.php?id='.$pageId
+                            ];
                         }
 
                         $questions[] = $dataQuestion;
                     }
-
-                    $courseName = "Медиа";
+                    
+                    $courseName = $courseItem['full_name'];
                     $quizId = $dataQuizId;
                     $dateCreate = date('d.m.Y');
 
@@ -122,21 +132,21 @@ class MoodleNotes extends Command
 
                     $fileName = $randString.".pdf";
                     $message = "Ви дали невірний відповідь на питання при проходження тесту: <br/>";
-                    $message = "<a href='".config('app.url')."/storage/pdf/".$fileName."'>рекомендації щодо вивчення курсу</a>";
+                    $message = "<a href='".config('app.url')."/storage/pdf/".$fileName."'>Рекомендації щодо вивчення курсу - ".$courseName."</a>";
 
                     $parametersRequest['messages'][] = [
-                    "touserid" => $userId,
-                    "text" => $message,
-                    "textformat" => 1,
-                    "clientmsgid" => 1
-                ];
+                        "touserid" => $userId,
+                        "text" => $message,
+                        "textformat" => 1,
+                        "clientmsgid" => 1
+                    ];
 
                     // отправка уведомления
                     $endpoint->request(
-                    'wsanalyticalsystem_send_messages',
-                    $parametersRequest,
-                    MoodleRest::METHOD_POST
-                );
+                        'wsanalyticalsystem_send_messages',
+                        $parametersRequest,
+                        MoodleRest::METHOD_POST
+                    );
 
                     Note::destroy($items['ids']);
                 
