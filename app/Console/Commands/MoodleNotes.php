@@ -132,7 +132,7 @@ class MoodleNotes extends Command
 
                     $fileName = $randString.".pdf";
                     $message = "Ви дали невірний відповідь на питання при проходження тесту: <br/>";
-                    $message = "<a href='".config('app.url')."/storage/pdf/".$fileName."'>Рекомендації щодо вивчення курсу - ".$courseName."</a>";
+                    $message .= "<a href='".config('app.url')."/storage/pdf/".$fileName."'>Рекомендації щодо вивчення курсу - ".$courseName."</a>";
 
                     $parametersRequest['messages'][] = [
                         "touserid" => $userId,
