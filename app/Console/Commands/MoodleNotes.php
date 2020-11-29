@@ -28,7 +28,7 @@ class MoodleNotes extends Command
      *
      * @var string
      */
-    protected $description = 'Отправка уведомлений пользователям о прохождении тестов и рекомендательом письме';
+    protected $description = 'Відправлення повідомлень користувачам про проходження тестів і рекомендувача листі';
 
     protected $rows;
 
@@ -121,8 +121,8 @@ class MoodleNotes extends Command
                     Storage::put('public/pdf/'.$randString.'.pdf', $pdf->output());
 
                     $fileName = $randString.".pdf";
-                    $message = "Вы дали не верный ответ на вопросы при проходжении теста: <br/>";
-                    $message = "<a href='".config('app.url')."/storage/pdf/".$fileName."'>рекоммендации по изучению курса</a>";
+                    $message = "Ви дали невірний відповідь на питання при проходження тесту: <br/>";
+                    $message = "<a href='".config('app.url')."/storage/pdf/".$fileName."'>рекомендації щодо вивчення курсу</a>";
 
                     $parametersRequest['messages'][] = [
                     "touserid" => $userId,

@@ -26,7 +26,7 @@ class MoodleExportQuiz extends Command
      *
      * @var string
      */
-    protected $description = 'Данные moodle-системы. Тесты и конспекты.';
+    protected $description = 'Дані moodle-системи. Тести і конспекти.';
 
     protected $rows;
 

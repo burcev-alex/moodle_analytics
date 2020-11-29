@@ -25,7 +25,7 @@ class AnalyticsLsa extends Command
      *
      * @var string
      */
-    protected $description = 'Обработка очередь LSA анализа, через Python script';
+    protected $description = 'Обробка чергу LSA аналізу, через Python script';
 
     protected $rows;
 
