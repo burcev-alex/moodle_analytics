@@ -72,7 +72,7 @@ for key in sourceData:
 
     redisClient.hdel("moodle_analytical_database_lsa_source", key)
     
-    connection = pymysql.connect(host='localhost', user='test', password='ei7veeChu4bo', db='moodle_services_db', charset='utf8mb4', cursorclass=DictCursor)
+    connection = pymysql.connect(host='localhost', user='root', password='', db='moodle_ml_db', charset='utf8mb4', cursorclass=DictCursor)
     
     try:
         with connection:
