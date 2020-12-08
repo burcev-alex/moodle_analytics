@@ -68,9 +68,15 @@ def build(source):
     print('-----------')
 
     redisClient.hdel("moodle_analytical_database_lsa_source", key)
-        
+<<<<<<< HEAD
+    
     connection = pymysql.connect(host='localhost', user='root', password='', db='moodle_ml_db', charset='utf8mb4', cursorclass=DictCursor)
+    
+=======
         
+    connection = pymysql.connect(host='localhost', user='test', password='ei7veeChu4bo', db='moodle_services_db', charset='utf8mb4', cursorclass=DictCursor)
+        
+>>>>>>> 55118146a200ae657c532024e277231f061ea973
     try:
         with connection:
             cur = connection.cursor()

@@ -45,7 +45,7 @@ def decode_redis(src):
 
 io = StringIO()
 r = redis.Redis()
-sourceData = r.hgetall("moodle_analytical_database_lsa")
+sourceData = r.hgetall("moodle_analytical_database_lsa_source")
 sourceData = decode_redis(sourceData)
 resultStatus = 0
 resultParam = ''
@@ -65,6 +65,6 @@ for key in sourceData:
         resultStatus = obj.getResultStatus()
         resultParam = obj.getResultParam()
 
-        r.hdel("moodle_analytical_database_lsa", key)
+        r.hdel("moodle_analytical_database_lsa_source", key)
 
 print(str(resultParam) + '|' + str(resultStatus))
